@@ -44,7 +44,6 @@ namespace adonet_db_videogame
                 }
             }
         }
-
         public static void SearchById()
         {
             string connectionString = "Data Source=localhost;Initial Catalog=videogame_db;Integrated Security=True";
@@ -121,6 +120,37 @@ namespace adonet_db_videogame
                     foreach (var videogame in videogames)
                     {
                         Console.WriteLine(videogame.ToString());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+        }
+
+        public static void DeleteGame()
+        {
+            string connectionString = "Data Source=localhost;Initial Catalog=videogame_db;Integrated Security=True";
+            SqlConnection connection = new SqlConnection(connectionString);
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "DELETE FROM videogames WHERE id = @id";
+                    SqlCommand cmd = new SqlCommand(query, connection);
+
+                    using (cmd)
+                    {
+
+                        int idVideogameToDelete = Helpers.checkValidInt("Remove videogame with id: ", "Insert a valid number...");
+                        cmd.Parameters.Add(new SqlParameter("@id", idVideogameToDelete));
+                        int affectedRows = cmd.ExecuteNonQuery();
+
+                        Console.WriteLine("Videogame removed");
                     }
                 }
                 catch (Exception ex)

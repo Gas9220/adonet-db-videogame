@@ -27,6 +27,8 @@ What would you like to do?
                     VideogameManager.SearchByName();
                     break;
                 case 4:
+                    VideogameManager.DeleteGame();
+                    break;
                 case 5:
                 default:
                     break;
