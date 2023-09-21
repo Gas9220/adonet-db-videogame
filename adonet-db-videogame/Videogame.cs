@@ -8,11 +8,11 @@ namespace adonet_db_videogame
 {
     public class Videogame
     {
-        long Id {  get; set; }
-        string Name { get; set; }
-        string Overview { get; set; }
-        DateTime ReleaseDate { get; set; }
-        long SoftwareHouseId { get; set; }
+        public long Id {  get; set; }
+        public string Name { get; set; }
+        public string Overview { get; set; }
+        public DateTime ReleaseDate { get; set; }
+        public long SoftwareHouseId { get; set; }
 
         public Videogame(long id, string name, string overview, DateTime releaseDate, long softwareHouseId)
         {

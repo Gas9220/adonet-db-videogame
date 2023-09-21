@@ -9,7 +9,7 @@ namespace adonet_db_videogame
 {
     public static class VideogameManager
     {
-        public static void AddNewGame()
+        public static void InsertGame()
         {
             string connectionString = "Data Source=localhost;Initial Catalog=videogame_db;Integrated Security=True";
             SqlConnection connection = new SqlConnection(connectionString);
@@ -24,10 +24,12 @@ namespace adonet_db_videogame
 
                     SqlCommand cmd = new SqlCommand(query, connection);
 
-                    cmd.Parameters.Add(new SqlParameter("@name", "name"));
-                    cmd.Parameters.Add(new SqlParameter("@overview", "overview"));
-                    cmd.Parameters.Add(new SqlParameter("@release_date", "22/10/2025"));
-                    cmd.Parameters.Add(new SqlParameter("@software_house_id", "1"));
+                    Videogame newVideogame = CreateVideogame();
+
+                    cmd.Parameters.Add(new SqlParameter("@name", newVideogame.Name));
+                    cmd.Parameters.Add(new SqlParameter("@overview", newVideogame.Overview));
+                    cmd.Parameters.Add(new SqlParameter("@release_date", newVideogame.ReleaseDate));
+                    cmd.Parameters.Add(new SqlParameter("@software_house_id", newVideogame.SoftwareHouseId));
 
                     int affectedRows = cmd.ExecuteNonQuery();
 
@@ -38,8 +40,19 @@ namespace adonet_db_videogame
                     Console.WriteLine(ex.Message);
                 }
             }
-
         }
 
+
+        private static Videogame CreateVideogame()
+        {
+            string name = Helpers.checkValidString("Videogame name: ", "Cannot be empty");
+            string overview = Helpers.checkValidString("Videogame overview: ", "Cannot be empty");
+            DateTime date = Helpers.checkValidDate("Videogame release date: ", "Date in wrong format");
+            int swh = Helpers.checkValidInt("Videogame Software house: ", "Insert a valid number");
+
+            Videogame newVideogame = new Videogame(0, name, overview, date, swh);
+
+            return newVideogame;
+        }
     }
 }
