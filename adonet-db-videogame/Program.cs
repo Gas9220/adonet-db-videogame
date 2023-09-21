@@ -1,4 +1,6 @@
-﻿namespace adonet_db_videogame
+﻿using System.Data.SqlClient;
+
+namespace adonet_db_videogame
 {
     internal class Program
     {
