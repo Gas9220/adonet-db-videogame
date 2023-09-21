@@ -73,10 +73,54 @@ namespace adonet_db_videogame
                             {
                                 Videogame findedVideogame = new Videogame(0, reader.GetString(1), reader.GetString(2), reader.GetDateTime(3), reader.GetInt64(6));
                                 Console.WriteLine(findedVideogame.ToString());
-                                
+
                             }
                         }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+        }
 
+        public static void SearchByName()
+        {
+            string connectionString = "Data Source=localhost;Initial Catalog=videogame_db;Integrated Security=True";
+            SqlConnection connection = new SqlConnection(connectionString);
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT videogames.* FROM videogames WHERE name LIKE @Name;";
+                    List<Videogame> videogames = new List<Videogame>();
+
+                    SqlCommand cmd = new SqlCommand(query, connection);
+
+                    using (cmd)
+                    {
+
+                        string videogameName = Helpers.checkValidString("Insert videogame name: ", "Can't be empty");
+                        cmd.Parameters.Add(new SqlParameter("@Name", $"{videogameName}%"));
+                        SqlDataReader reader = cmd.ExecuteReader();
+
+                        using (reader)
+                        {
+                            while (reader.Read())
+                            {
+                                Videogame findedVideogame = new Videogame(0, reader.GetString(1), reader.GetString(2), reader.GetDateTime(3), reader.GetInt64(6));
+                                videogames.Add(findedVideogame);
+                            }
+                        }
+                    }
+
+                    foreach (var videogame in videogames)
+                    {
+                        Console.WriteLine(videogame.ToString());
                     }
                 }
                 catch (Exception ex)

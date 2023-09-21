@@ -24,6 +24,8 @@ What would you like to do?
                     VideogameManager.SearchById();
                     break;
                 case 3:
+                    VideogameManager.SearchByName();
+                    break;
                 case 4:
                 case 5:
                 default:
