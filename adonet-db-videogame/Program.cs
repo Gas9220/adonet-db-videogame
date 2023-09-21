@@ -30,6 +30,8 @@ What would you like to do?
                     VideogameManager.DeleteGame();
                     break;
                 case 5:
+                    System.Environment.Exit(1);
+                    break;
                 default:
                     break;
             }
