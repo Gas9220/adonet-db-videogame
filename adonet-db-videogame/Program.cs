@@ -21,6 +21,8 @@ What would you like to do?
                     VideogameManager.InsertGame();
                     break;
                 case 2:
+                    VideogameManager.SearchById();
+                    break;
                 case 3:
                 case 4:
                 case 5:

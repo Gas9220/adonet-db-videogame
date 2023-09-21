@@ -24,16 +24,19 @@ namespace adonet_db_videogame
 
                     SqlCommand cmd = new SqlCommand(query, connection);
 
-                    Videogame newVideogame = CreateVideogame();
+                    using (cmd)
+                    {
+                        Videogame newVideogame = CreateVideogame();
 
-                    cmd.Parameters.Add(new SqlParameter("@name", newVideogame.Name));
-                    cmd.Parameters.Add(new SqlParameter("@overview", newVideogame.Overview));
-                    cmd.Parameters.Add(new SqlParameter("@release_date", newVideogame.ReleaseDate));
-                    cmd.Parameters.Add(new SqlParameter("@software_house_id", newVideogame.SoftwareHouseId));
+                        cmd.Parameters.Add(new SqlParameter("@name", newVideogame.Name));
+                        cmd.Parameters.Add(new SqlParameter("@overview", newVideogame.Overview));
+                        cmd.Parameters.Add(new SqlParameter("@release_date", newVideogame.ReleaseDate));
+                        cmd.Parameters.Add(new SqlParameter("@software_house_id", newVideogame.SoftwareHouseId));
 
-                    int affectedRows = cmd.ExecuteNonQuery();
+                        int affectedRows = cmd.ExecuteNonQuery();
 
-                    Console.WriteLine("Videogame added");
+                        Console.WriteLine("Videogame added");
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -42,7 +45,46 @@ namespace adonet_db_videogame
             }
         }
 
+        public static void SearchById()
+        {
+            string connectionString = "Data Source=localhost;Initial Catalog=videogame_db;Integrated Security=True";
+            SqlConnection connection = new SqlConnection(connectionString);
 
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT videogames.* FROM videogames WHERE id = @id";
+
+                    SqlCommand cmd = new SqlCommand(query, connection);
+
+                    using (cmd)
+                    {
+                        int videogameId = Helpers.checkValidInt("Insert videogame id: ", "Insert a valid number");
+                        cmd.Parameters.Add(new SqlParameter("@id", videogameId));
+                        SqlDataReader reader = cmd.ExecuteReader();
+
+                        using (reader)
+                        {
+
+                            while (reader.Read())
+                            {
+                                Videogame findedVideogame = new Videogame(0, reader.GetString(1), reader.GetString(2), reader.GetDateTime(3), reader.GetInt64(6));
+                                Console.WriteLine(findedVideogame.ToString());
+                                
+                            }
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+        }
         private static Videogame CreateVideogame()
         {
             string name = Helpers.checkValidString("Videogame name: ", "Cannot be empty");

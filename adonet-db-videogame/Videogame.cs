@@ -8,7 +8,7 @@ namespace adonet_db_videogame
 {
     public class Videogame
     {
-        public long Id {  get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
         public string Overview { get; set; }
         public DateTime ReleaseDate { get; set; }
@@ -21,6 +21,16 @@ namespace adonet_db_videogame
             Overview = overview;
             ReleaseDate = releaseDate;
             SoftwareHouseId = softwareHouseId;
+        }
+
+        public override string ToString()
+        {
+            return $@"
+Name: {Name}
+Overview: {Overview}
+Release date: {ReleaseDate}
+Software house id: {SoftwareHouseId}
+";
         }
     }
 }
